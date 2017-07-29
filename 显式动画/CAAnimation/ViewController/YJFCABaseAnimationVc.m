@@ -58,13 +58,18 @@
     
     CAKeyframeAnimation *animation = [CAKeyframeAnimation animation];
     animation.keyPath = @"backgroundColor";
-    animation.duration = 2.0;
+    animation.duration = 4.0;
     animation.values = @[
                          (__bridge id)[UIColor blueColor].CGColor,
                          (__bridge id)[UIColor redColor].CGColor,
                          (__bridge id)[UIColor greenColor].CGColor,
                          (__bridge id)[UIColor blueColor].CGColor
                          ];
+    // 计时函数
+    CAMediaTimingFunction *fn = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn];
+    // 帧与帧之间的技术函数
+    animation.timingFunctions = @[fn,fn,fn];
+    
     [self.colorLayer addAnimation:animation forKey:nil];
 }
 

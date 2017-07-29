@@ -13,6 +13,11 @@
 @property(nonatomic,strong) CALayer *shipLayer;
 @property(nonatomic,strong) UIBezierPath *bezierPath;
 
+@property (weak, nonatomic) IBOutlet UISlider *timeSlider;
+@property (weak, nonatomic) IBOutlet UILabel *timeLabel;
+@property (weak, nonatomic) IBOutlet UISlider *speedSlider;
+@property (weak, nonatomic) IBOutlet UILabel *speedLabel;
+
 @end
 
 @implementation YJFKeyFrameAnimationVC
@@ -46,6 +51,7 @@
 //    baseAnim.duration = 2.0f;
 //    [shipLayer addAnimation:baseAnim forKey:nil];
     
+    [self updateSliders:nil];
 }
 
 
@@ -54,10 +60,19 @@
     // 动画
     CAKeyframeAnimation *animation = [CAKeyframeAnimation animation];
     animation.keyPath = @"position";
-    animation.duration = 4.0f;
+    animation.duration = 2.0f;
     animation.rotationMode = kCAAnimationRotateAuto;
+    //    animation.repeatCount = 5;
+    //    animation.autoreverses = YES; // 倒放
     animation.path = _bezierPath.CGPath;
+    animation.timeOffset = self.timeSlider.value;
+    animation.speed = self.speedSlider.value;
+    
     animation.removedOnCompletion = NO;
+    animation.fillMode = kCAFillModeBoth;
+
+    
+    
     animation.delegate = self;
     [self.shipLayer addAnimation:animation forKey:@"keyframe"];
 
@@ -73,6 +88,19 @@
 
     NSLog(@"animationDidStop(finish: %@)",flag?@"YES":@"NO");
 }
+
+- (IBAction)updateSliders:(UISlider *)sender {
+    
+    CFTimeInterval timeoffset = self.timeSlider.value;
+    self.timeLabel.text = [NSString stringWithFormat:@"%0.2f",timeoffset];
+    
+    float speed = self.speedSlider.value;
+    self.speedLabel.text = [NSString stringWithFormat:@"%0.2f",speed];
+    
+}
+
+
+
 
 
 @end
